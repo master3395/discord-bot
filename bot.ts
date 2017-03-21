@@ -8,4 +8,5 @@ const config = {
 };
 
 startBot(config)
-    .then(() => console.log('ready'));
+  .then(() => console.log('ready'))
+  .catch(() => console.error('could not start the bot'));

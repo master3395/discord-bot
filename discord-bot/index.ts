@@ -25,14 +25,22 @@ export default (config: { token: string, googleCseId: string, googleCseKey: stri
     }
   });
 
-  responder.getReplyStream().subscribe(({ response, channelId }) => {
-    const channel = client.channels.find((channel: Channel) => channel.id === channelId);
-    if ( channel instanceof DMChannel
-      || channel instanceof GroupDMChannel
-      || channel instanceof TextChannel
-    ) {
-      channel.sendMessage(response);
-    }
+  responder.getReplyStream().subscribe({
+    next({ response, channelId }) {
+      const channel = client.channels.find((channel: Channel) => channel.id === channelId);
+      if ( channel instanceof DMChannel
+        || channel instanceof GroupDMChannel
+        || channel instanceof TextChannel
+      ) {
+        channel.sendMessage(response);
+      }
+    },
+    error(err) {
+      console.error('reply stream errored', err);
+    },
+    complete() {
+      console.warn('reply stream unexpectedly completed');
+    },
   });
 
   client.login(token);
