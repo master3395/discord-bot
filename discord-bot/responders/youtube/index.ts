@@ -24,5 +24,9 @@ function getRandomYoutubeVideoUrl(searchQuery: string, youtubeApiKey: string, ax
     .then(({ data: { items } }) => items.map(({ id: { videoId } }) => videoId))
     .then(videoIds => videoIds.map(videoId => `https://www.youtube.com/watch?v=${videoId}`))
     .then(results => results.length > 0 ? results[ Math.floor(Math.random() * results.length) ] : Promise.reject(''))
+    .catch(e => {
+      console.error(e);
+      return Promise.reject(e);
+    })
     .catch(() => 'Could not find results for your request.');
 }

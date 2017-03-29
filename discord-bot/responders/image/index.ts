@@ -41,6 +41,10 @@ function getRandomImageUrl(options: { searchQuery: string, isGifQuery: boolean, 
     .then(() => axios.get('https://www.googleapis.com/customsearch/v1', { params }))
     .then(({ data: { items } }) => items)
     .then(searchResults => searchResults[ Math.floor(Math.random() * searchResults.length) ])
+    .catch(e => {
+      console.error(e);
+      return Promise.reject(e);
+    })
     .catch(() => ({ link: 'Could not find results for your request.' }))
     .then(({ link }) => link);
 }
